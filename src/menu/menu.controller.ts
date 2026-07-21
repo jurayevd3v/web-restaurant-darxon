@@ -11,7 +11,12 @@ import {
   UploadedFile,
   Query,
 } from '@nestjs/common';
-import { ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '../decorators/roles-auth-decorator';
 import { RolesGuard } from '../guards/roles.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -28,6 +33,7 @@ export class MenuController {
   constructor(private readonly service: MenuService) {}
 
   @ApiOperation({ summary: 'Menu create' })
+  @ApiBearerAuth()
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Post()
@@ -47,7 +53,10 @@ export class MenuController {
 
   @ApiOperation({ summary: 'Paginate menu' })
   @Get(':category_id/page')
-  paginate(@Param('category_id') category_id: string, @Query('page') page: number) {
+  paginate(
+    @Param('category_id') category_id: string,
+    @Query('page') page: number,
+  ) {
     return this.service.paginate(category_id, page);
   }
 
@@ -58,6 +67,7 @@ export class MenuController {
   }
 
   @ApiOperation({ summary: 'Menu delete by ID' })
+  @ApiBearerAuth()
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Delete(':id')
@@ -66,6 +76,7 @@ export class MenuController {
   }
 
   @ApiOperation({ summary: 'Menu update by ID' })
+  @ApiBearerAuth()
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Put(':id')

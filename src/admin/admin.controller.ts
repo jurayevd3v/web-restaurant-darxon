@@ -11,7 +11,12 @@ import {
   UseGuards,
   Put,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Response } from 'express';
 import { CookieGetter } from '../decorators/cookieGetter.decorator';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -29,6 +34,7 @@ export class AdminController {
   constructor(private readonly service: AdminService) {}
 
   @ApiOperation({ summary: 'Admin create' })
+  @ApiSecurity('admin-secret')
   @Post('create')
   async create(
     @Body() createDto: AdminCreateDto,
@@ -57,6 +63,7 @@ export class AdminController {
   }
 
   @ApiOperation({ summary: 'Admin view all' })
+  @ApiBearerAuth()
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
@@ -66,6 +73,7 @@ export class AdminController {
   }
 
   @ApiOperation({ summary: 'Admin view by ID' })
+  @ApiBearerAuth()
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
@@ -75,6 +83,7 @@ export class AdminController {
   }
 
   @ApiOperation({ summary: 'Admin delete by ID' })
+  @ApiBearerAuth()
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
@@ -84,6 +93,7 @@ export class AdminController {
   }
 
   @ApiOperation({ summary: 'Admin update by ID' })
+  @ApiBearerAuth()
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
