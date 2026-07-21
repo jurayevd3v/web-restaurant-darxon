@@ -27,6 +27,7 @@ import { AdminCreateDto } from './dto/admin-create.dto';
 import { AdminLoginDto } from './dto/admin-login.dto';
 import { Admin } from './models/admin.model';
 import { ADminUpdateDto } from './dto/admin-update.dto';
+import { AdminSecretGuard } from 'src/guards/admin-secret.guard';
 
 @ApiTags('Admin')
 @Controller('admin')
@@ -35,6 +36,7 @@ export class AdminController {
 
   @ApiOperation({ summary: 'Admin create' })
   @ApiSecurity('admin-secret')
+  @UseGuards(AdminSecretGuard)
   @Post('create')
   async create(
     @Body() createDto: AdminCreateDto,
